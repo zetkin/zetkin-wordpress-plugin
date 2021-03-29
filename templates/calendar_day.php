@@ -1,18 +1,21 @@
 <?php
-$_date = date("Y-m-d", strtotime("$year-$month-$day"));
+// Variables
+// $year -> The year sent by the class to generate from
+// $month -> The year sent by the class to generate from
+// $day -> The day sent by the month template file
+// $_action -> Current event
+// $html -> The return value for the calendar (no need to pass as a return value)
 
-if (!empty($action_dates[$_date])) {
-    foreach ($action_dates[$_date] as $_action) {
-        $html .= "<div class=\"zetkin_calendar_day\">";
-        $html .= "<div class=\"zetkin_calendar_day__image\"><img src=\"https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=600x300&maptype=roadmap
-        &markers={$_action->location->lat},{$_action->location->lng}&key=AIzaSyDobGyeXcUNudzG3WIwtaTLD1NapIxtFrQ\"></div>";
-        $html .= "<div class=\"zetkin_calendar_day__meta\">";
-        $html .= "<div class=\"start_time\">{$_action->start_time}</div>";
-        $html .= "<div class=\"end_time\">{$_action->end_time}</div>";
-        $html .= "<div class=\"title\">{$_action->title}</div>";
-        $html .= "<div class=\"contact\">{$_action->contact->name}</div>";
-        $html .= "<div class=\"description\">{$_action->info_text}</div>";
-        $html .= "</div>";
-        $html .= "</div>";
-    }
-}
+$html .= "<div class=\"zetkin_calendar_day\">";
+$html .= "<div class=\"zetkin_calendar_day__image\"><img src=\"https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x200&maptype=roadmap
+&markers={$_action->location->lat},{$_action->location->lng}&key=AIzaSyDobGyeXcUNudzG3WIwtaTLD1NapIxtFrQ\"></div>";
+$html .= "<div class=\"zetkin_calendar_day__meta\">";
+$html .= "<div class=\"title\">{$_action->title}</div>";
+$html .= "<div class=\"time\">";
+$html .= "<div class=\"time__start\"><span>Start</span><span>".date("H:i j/n", strtotime($_action->start_time))."</span></div>";
+$html .= "<div class=\"time__end\"><span>Slut</span><span>".date("H:i j/n", strtotime($_action->end_time))."</span></div>";
+$html .= "</div>";
+$html .= "<div class=\"description\">{$_action->info_text}</div>";
+$html .= "<div class=\"contact\">Kontaktperson: {$_action->contact->name}</div>";
+$html .= "</div>";
+$html .= "</div>";

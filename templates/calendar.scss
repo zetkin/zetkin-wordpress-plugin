@@ -9,10 +9,12 @@
     display: flex;
     font-size: 13px;
     margin-top: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 8px;
 
     &__image {
         width: 200px;
-        margin-right: 10px;
+        margin-right: 8px;
 
         img {
             width: 100%;
@@ -21,5 +23,37 @@
 
     &__meta {
         flex: 1;
+
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 3px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        }
+        .time {
+            display: flex;
+
+            &__start, &__end {
+                width: 50%;
+                display: flex;
+
+                span {
+                    &:first-of-type {
+                        font-weight: bold;
+                        width: 80px;
+                    }
+                }
+            }
+        }
+        .description {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 5px;
+            border-radius: 3px;
+            margin: 5px 0;
+        }
+        .contact {
+
+        }
     }
 }

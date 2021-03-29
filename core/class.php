@@ -25,10 +25,8 @@ class zetkin_calendar {
     private function shortcode() {
         add_shortcode( 'zetkin_calendar', function($atts) {
             $calendar = "";
-            for ($i=1; $i<=12; $i++) {
-                $calendar .= $this->generate_calendar($i, 2021);
-
-            }
+            $month = date("n", time());
+            $calendar .= $this->generate_calendar($month, 2021);
             return $calendar;
         });
     }
@@ -55,7 +53,7 @@ class zetkin_calendar {
         $campaigns = get_transient("_zetkin_calendar_campaigns_$id");
         if (!$campaigns) {
             $campaigns = file_get_contents("https://api.zetk.in/v1/orgs/$id/campaigns");
-            set_transient("_zetkin_calendar_campaigns_$id", $campaigns, 60*60*2);
+            set_transient("_zetkin_calendar_campaigns_$id", $campaigns, 30);
         }
         return json_decode($campaigns);
     }
@@ -63,7 +61,7 @@ class zetkin_calendar {
         $actions = get_transient("_zetkin_calendar_actions_$id_$c_id");
         if (!$actions) {
             $actions = file_get_contents("https://api.zetk.in/v1/orgs/$id/campaigns/$c_id/actions");
-            set_transient("_zetkin_calendar_actions_$id_$c_id", $actions, 60*60*2);
+            set_transient("_zetkin_calendar_actions_$id_$c_id", $actions, 30);
         }
         return json_decode($actions);
     }
