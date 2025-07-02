@@ -8,7 +8,7 @@ if (! defined('ABSPATH')) {
 
 class Settings
 {
-    const ORGANISATION_ID_OPTION = "zetkin_organisation_id";
+    const ORGANIZATION_ID_OPTION = "zetkin_organization_id";
     const STAGING_ENVIRONMENT_OPTION = "zetkin_staging_environment";
 
     public static function init()
@@ -27,6 +27,17 @@ class Settings
 
         add_action('admin_init', function () {
             self::registerSettings();
+        });
+
+        add_action('enqueue_block_editor_assets', function () {
+            wp_add_inline_script(
+                'wp-block-editor',
+                'window.zetkinSettings = ' . wp_json_encode([
+                    'organizationId' => get_option(self::ORGANIZATION_ID_OPTION, ''),
+                    'stagingEnvironment' => get_option(self::STAGING_ENVIRONMENT_OPTION, ''),
+                ]) . ';',
+                'before'
+            );
         });
     }
 
@@ -57,13 +68,13 @@ class Settings
 
         // Note: boolean settings should use '1' for true and '' for false
         // Because the wp_options table casts everything to a string.
-        self::registerOrganisationIdSetting();
+        self::registerOrganizationIdSetting();
         self::registerStagingSiteSetting();
     }
 
-    private static function registerOrganisationIdSetting()
+    private static function registerOrganizationIdSetting()
     {
-        $settingId = self::ORGANISATION_ID_OPTION;
+        $settingId = self::ORGANIZATION_ID_OPTION;
         register_setting('zetkin_settings_group', $settingId, [
             'sanitize_callback' => function ($input) use ($settingId) {
                 $is_int = filter_var($input, FILTER_VALIDATE_INT) !== false;
@@ -72,7 +83,7 @@ class Settings
                     add_settings_error(
                         $settingId,
                         "{$settingId}_invalid",
-                        'Organisation ID must be a positive number.',
+                        'Organization ID must be a positive number.',
                         'error'
                     );
                     return get_option($settingId);
@@ -83,7 +94,7 @@ class Settings
 
         add_settings_field(
             $settingId,
-            'Organisation ID',
+            'Organization ID',
             function () use ($settingId) {
                 $value = get_option($settingId, '');
                 echo '<input required type="number" name="' . $settingId . '" value="' . esc_attr($value) . '" />';
@@ -107,7 +118,7 @@ class Settings
             'Use Zetkin Staging Environment',
             function () use ($settingId) {
                 $value = get_option($settingId, '');
-                echo '<input id="' . $settingId . '" type="checkbox" name="'. $settingId . '" value="1"' . checked('1', $value, '') . ' />';
+                echo '<input id="' . $settingId . '" type="checkbox" name="' . $settingId . '" value="1"' . checked('1', $value, '') . ' />';
                 echo '<label for="' . $settingId . '" class="description">Check this box if you are using the Zetkin staging environment. Only Zetkin developers should use this.</label>';
             },
             'zetkin-settings',

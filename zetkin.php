@@ -15,7 +15,9 @@
  */
 
 use Zetkin\ZetkinWordPressPlugin\Blocks;
+use Zetkin\ZetkinWordPressPlugin\RestAPI;
 use Zetkin\ZetkinWordPressPlugin\Settings;
+use Zetkin\ZetkinWordPressPlugin\Surveys;
 
 if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
@@ -24,4 +26,6 @@ if (! defined('ABSPATH')) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 Blocks::init();
+RestAPI::init();
 Settings::init();
+Surveys::init();

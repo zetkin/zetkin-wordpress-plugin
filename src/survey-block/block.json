@@ -1,15 +1,21 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "zetkin/calendar-block",
+	"name": "zetkin/survey-block",
 	"version": "0.1.0",
-	"title": "Zetkin Calendar",
+	"title": "Zetkin Survey",
 	"category": "widgets",
-	"icon": "calendar",
-	"description": "Displays a Zetkin organization's events.",
+	"icon": "feedback",
+	"description": "Embeds a Zetkin survey.",
 	"example": {},
 	"supports": {
 		"html": false
+	},
+	"attributes": {
+		"surveyId": {
+			"type": "number",
+			"default": 0
+		}
 	},
 	"textdomain": "zetkin",
 	"editorScript": "file:./index.js",

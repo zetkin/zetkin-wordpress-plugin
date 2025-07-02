@@ -1,15 +1,25 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "zetkin/calendar-block",
+	"name": "zetkin/join-form-block",
 	"version": "0.1.0",
-	"title": "Zetkin Calendar",
+	"title": "Zetkin Join Form",
 	"category": "widgets",
-	"icon": "calendar",
-	"description": "Displays a Zetkin organization's events.",
+	"icon": "admin-users",
+	"description": "Embeds a Zetkin join form.",
 	"example": {},
 	"supports": {
 		"html": false
+	},
+	"attributes": {
+		"formId": {
+			"type": "number",
+			"default": 0
+		},
+		"formSubmitToken": {
+			"type": "string",
+			"default": ""
+		}
 	},
 	"textdomain": "zetkin",
 	"editorScript": "file:./index.js",

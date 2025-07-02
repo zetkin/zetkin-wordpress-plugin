@@ -1,55 +1,45 @@
-=== Copyright Date Block ===
-Contributors:      The WordPress Contributors
-Tags:              block
+=== Zetkin Membership Blocks ===
+Contributors:      Zetkin Project
+Tags:              block, membership, events, survey, zetkin
 Tested up to:      6.7
 Stable tag:        0.1.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Example block scaffolded with Create Block tool.
+A set of WordPress blocks for organisations using the Zetkin membership system. Easily embed membership forms, event calendars, and surveys from your
+Zetkin organisation directly into your WordPress site.
 
 == Description ==
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+Zetkin is a platform that empowers organisations to manage their membership, events, and campaigns. This plugin provides a suite of blocks to seamlessly
+integrate Zetkin's tools into your WordPress site:
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+- **Join Form Block:** Add a form for users to sign up as members of your Zetkin organisation. Submissions are sent directly to Zetkin.
+- **Calendar Block:** Display a calendar of upcoming events from your Zetkin organisation, keeping your members and visitors informed and engaged.
+- **Survey Block:** Embed any survey from your Zetkin organisation, allowing you to collect feedback or run campaigns directly on your site.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload the plugin files to the `/wp-content/plugins/copyright-date-block` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-
+1. Upload the plugin files to the `/wp-content/plugins/zetkin` directory, or install the plugin through the WordPress plugins screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Configure your Zetkin organisation settings in the plugin options.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What is Zetkin? =
+Zetkin is a platform for organisations to manage their membership, events, and campaigns. Learn more at [zetkin.org](https://zetkin.org).
 
-An answer to that question.
+= Do I need a Zetkin account? =
+Yes, you need to have a Zetkin organisation account to use these blocks.
 
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+= Can I customize the blocks? =
+Yes, each block comes with settings to connect to your Zetkin organisation and select which events or surveys to display.
 
 == Changelog ==
 
 = 0.1.0 =
-* Release
+* Initial release with join form, calendar, and survey blocks.
 
-== Arbitrary section ==
+== Support ==
 
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.
+For support and documentation, visit [zetkin.org](https://zetkin.org) or contact your Zetkin administrator.

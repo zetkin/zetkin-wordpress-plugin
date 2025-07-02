@@ -8,7 +8,8 @@ if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-class Utils {
+class Utils
+{
     const DATE_TIME_FORMAT_WITH_YEAR = "F j Y, g:i A";
     const DATE_TIME_FORMAT_WITHOUT_YEAR = "F j, g:i A";
     const TIME_FORMAT = "g:i A";
@@ -20,7 +21,8 @@ class Utils {
      * Returns Zetkin-style formatted dates
      * e.g. June 11, 4:40 PM - 6:40 PM
      */
-    public static function getFormattedEventTime(string | null $startTime, string | null $endTime) {
+    public static function getFormattedEventTime(string | null $startTime, string | null $endTime)
+    {
         if (!$startTime && !$endTime) {
             return null;
         }
@@ -37,7 +39,8 @@ class Utils {
         return self::getFormattedTimes($startTime, $endTime);
     }
 
-    private static function getFormattedTime($startTime) {
+    private static function getFormattedTime($startTime)
+    {
         $date = new DateTime($startTime);
         $now = new DateTime();
         if ($date->format('Y') === $now->format('Y')) {
@@ -46,7 +49,8 @@ class Utils {
         return $date->format(self::DATE_TIME_FORMAT_WITH_YEAR);
     }
 
-    private static function getFormattedTimes($startTime, $endTime) {
+    private static function getFormattedTimes($startTime, $endTime)
+    {
         $startDate = new DateTime($startTime);
         $endDate = new DateTime($endTime);
         if ($startDate->format("F j Y") === $endDate->format("F j Y")) {
