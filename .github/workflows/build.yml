@@ -40,8 +40,13 @@ jobs:
       - name: Create plugin ZIP
         run: npx wp-scripts plugin-zip
 
-      - name: Upload plugin ZIP artifact
+      - name: Unzip plugin
+        run: |
+          mkdir extracted
+          unzip zetkin-wordpress-plugin.zip -d extracted
+
+      - name: Upload flattened plugin contents
         uses: actions/upload-artifact@v4
         with:
           name: zetkin-wordpress-plugin
-          path: '*.zip'
+          path: extracted/**
