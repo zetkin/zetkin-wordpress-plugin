@@ -1,0 +1,47 @@
+name: Build WordPress Plugin
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, curl, json, zip
+          tools: composer
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --no-interaction
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Build plugin assets
+        run: npm run build
+
+      - name: Create plugin ZIP
+        run: npx wp-scripts plugin-zip
+
+      - name: Upload plugin ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zetkin-wordpress-plugin
+          path: '*.zip'
