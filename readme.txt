@@ -35,6 +35,16 @@ Yes, you need to have a Zetkin organisation account to use these blocks.
 = Can I customize the blocks? =
 Yes, each block comes with settings to connect to your Zetkin organisation and select which events or surveys to display.
 
+== Contributing ==
+
+= How do I build the plugin? =
+
+Run `npm run plugin-zip`. This will:
+
+- Install PHP and JavaScript dependencies
+- Build the WordPress blocks
+- Zip all plugin files into `zetkin-wordpress-plugin.zip`
+
 == Changelog ==
 
 = 0.1.0 =
