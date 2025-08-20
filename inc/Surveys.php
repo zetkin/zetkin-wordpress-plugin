@@ -108,8 +108,25 @@ class Surveys
         $redirectUrl = home_url(add_query_arg(null, null)); // Get the current URL
 
         $surveyElements = $zetkinSurvey["elements"];
+
+        $formElements = [
+            new Element(
+                "input",
+                ["type" => "hidden", "name" => "action", "value" => self::WORDPRESS_ACTION]
+            ),
+            new Element("input", ["type" => "hidden", "name" => "redirect_url.hidden", "value" => $redirectUrl]),
+            new Element("input", ["type" => "hidden", "name" => "survey_id.hidden", "value" => $zetkinSurvey["id"]]),
+        ];
+
+        foreach ($surveyElements as $surveyElement) {
+            $formElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission);
+        }
+
         // Add signature elements, required on all surveys but not in the Zetkin API response.
-        $surveyElements = array_merge($surveyElements, [
+        $signatureElements = [
+            new Element("p", ["class" => "zetkin-survey-signature__description"], "Sign with name and email *")
+        ];
+        $sigSurveyElements = [
             [
                 "id" => "sig_first_name",
                 "type" => "question",
@@ -147,20 +164,12 @@ class Surveys
                     "required" => true
                 ]
             ]
-        ]);
-
-        $formElements = [
-            new Element(
-                "input",
-                ["type" => "hidden", "name" => "action", "value" => self::WORDPRESS_ACTION]
-            ),
-            new Element("input", ["type" => "hidden", "name" => "redirect_url.hidden", "value" => $redirectUrl]),
-            new Element("input", ["type" => "hidden", "name" => "survey_id.hidden", "value" => $zetkinSurvey["id"]]),
         ];
 
-        foreach ($surveyElements as $surveyElement) {
-            $formElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission);
+        foreach ($sigSurveyElements as $surveyElement) {
+            $signatureElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission);
         }
+        $formElements[] = new Element("div", ["class" => "zetkin-survey-signature"], $signatureElements);
 
         $formElements[] = self::getPrivacyHTMLElements($zetkinSurvey);
         $formElements[] = new Element("button", ["class" => "zetkin-survey-submit", "type" => "submit"], __("Submit", "zetkin"));
@@ -178,6 +187,9 @@ class Surveys
             $formElements
         );
 
+        if ($zetkinSurvey["title"]) {
+            Renderer::renderElement(new Element("h2", ["class" => "zetkin-survey-title"], $zetkinSurvey["title"]));
+        }
         Renderer::renderElement($formElement);
     }
 
@@ -218,7 +230,7 @@ class Surveys
         $content = $element["text_block"]["content"] ?? "";
         if ($header) {
             $children[] = new Element(
-                "h2",
+                "p",
                 [
                     "class" => "zetkin-survey-text__header",
                 ],
@@ -246,6 +258,7 @@ class Surveys
             "input",
             [
                 "id" => $id,
+                "class" => "zetkin-survey-question__input",
                 "name" => $name,
                 "type" => $element["question"]["response_config"]["type"] ?? "text",
                 "required" => $element["question"]["required"],
@@ -264,8 +277,10 @@ class Surveys
             "textarea",
             [
                 "id" => $id,
+                "class" => "zetkin-survey-question__textarea",
                 "name" => $name,
                 "required" => $element["question"]["required"],
+                "rows" => 4,
             ],
             $prevSubmission[$name] ?? ""
         );
@@ -291,13 +306,14 @@ class Surveys
             }
 
             $optionChildren[] = new Element(
-                "div",
+                "label",
                 [
-                    "class" => "zetkin-survey-option"
+                    "class" => "zetkin-survey-question__option",
+                    "for" => $optionId
                 ],
                 [
                     new Element("input", $optionAttrs),
-                    new Element("label", ["for" => $optionId], $option["text"])
+                    new Element("span", [], $option["text"])
                 ]
             );
         }
@@ -305,7 +321,7 @@ class Surveys
         $children[] = new Element(
             "ol",
             [
-                "class" => "zetkin-survey-options"
+                "class" => "zetkin-survey-question__options"
             ],
             $optionChildren
         );
@@ -345,7 +361,7 @@ class Surveys
         $children[] = new Element(
             "select",
             [
-                "class" => "zetkin-survey-select",
+                "class" => "zetkin-survey-question__select",
                 "id" => $id,
                 "name" => $name,
             ],
@@ -365,7 +381,7 @@ class Surveys
             $children[] = new Element(
                 "label",
                 [
-                    "class" => "zetkin-survey-question-label",
+                    "class" => "zetkin-survey-question__label",
                     "for" => $id,
                 ],
                 $element["question"]["question"] ?? ""
@@ -374,7 +390,7 @@ class Surveys
             $children[] = new Element(
                 "span",
                 [
-                    "class" => "zetkin-survey-question-label",
+                    "class" => "zetkin-survey-question__label",
                 ],
                 $element["question"]["question"] ?? ""
             );
@@ -383,7 +399,7 @@ class Surveys
         if ($element["question"]["description"] ?? false) {
             $children[] = new Element(
                 "p",
-                ["class" => "zetkin-survey-question-description"],
+                ["class" => "zetkin-survey-question__description"],
                 $element["question"]["description"]
             );
         }
@@ -399,19 +415,29 @@ class Surveys
             $organizationName
         );
         $children = [
-            new Element("p", [], __("Privacy policy", "zetkin")),
-            new Element(
-                "input",
-                ["type" => "checkbox", "id" => "zetkin-survey-privacy-policy", "name" => "privacy.approval", "required" => true],
-            ),
-            new Element("label", ["for" => "zetkin-survey-privacy-policy"], __("I accept the terms stated below", "zetkin")),
-            new Element("p", [], $privacyMessage),
-            new Element("p", [], [
+            new Element("p", ["class" => "zetkin-survey-privacy__title"], __("Privacy policy", "zetkin")),
+            new Element("label", ["for" => "zetkin-survey-privacy-policy", "class" => "zetkin-survey-question__option"], [
                 new Element(
-                    "a",
-                    ["target" => "_blank", "href" => "https://zetkin.org/privacy"],
-                    __("Click to read the full Zetkin Privacy Policy", "zetkin")
-                )
+                    "input",
+                    [
+                        "type" => "checkbox",
+
+                        "id" => "zetkin-survey-privacy-policy",
+                        "name" => "privacy.approval",
+                        "required" => true
+                    ],
+                ),
+                new Element("span", [], __("I accept the terms stated below *", "zetkin"))
+            ]),
+            new Element("div", ["class" => "zetkin-survey-privacy__details"], [
+                new Element("p", [], $privacyMessage),
+                new Element("p", [], [
+                    new Element(
+                        "a",
+                        ["target" => "_blank", "href" => "https://zetkin.org/privacy"],
+                        __("Click to read the full Zetkin Privacy Policy", "zetkin")
+                    )
+                ])
             ])
         ];
         return new Element("div", ["class" => "zetkin-survey-privacy"], $children);
