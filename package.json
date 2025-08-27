@@ -15,7 +15,9 @@
 		"start": "wp-scripts start --webpack-copy-php --blocks-manifest"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.16.0"
+		"@easepick/bundle": "^1.2.1",
+		"@wordpress/scripts": "^30.16.0",
+		"react": "^18.3.1"
 	},
 	"files": [
 		"build/*",
@@ -23,8 +25,5 @@
 		"src/*",
 		"vendor/*",
 		"zetkin.php"
-	],
-	"dependencies": {
-		"react": "^19.1.1"
-	}
+	]
 }

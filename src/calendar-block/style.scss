@@ -5,7 +5,66 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.zetkin-events {
+.zetkin-calendar-events {
 	list-style: none;
 	padding: 0;
+}
+
+.zetkin-events-filter {
+	align-items: center;
+	display: flex;
+	gap: 0.5rem;
+}
+
+.zetkin-events-filter__button {
+	background-color: var(--wp--preset--color--base, #fff);
+	border: 1px solid var(--wp--preset--color--contrast, #000);
+	border-radius: 5rem;
+	cursor: pointer;
+	height: 2rem;
+	line-height: 2.25;
+	padding: 0 0.75rem;
+
+	&:hover {
+		background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
+	}
+}
+
+.zetkin-events-filter__clear-button.zetkin-events-filter__clear-button--visible {
+	display: block;
+}
+
+.zetkin-events-filter__button.zetkin-events-filter__button--selected,
+.zetkin-events-filter__clear-button.zetkin-events-filter__clear-button--visible {
+	background-color: var(--wp--preset--color--contrast, #000);
+	color: var(--wp--preset--color--base, #fff);
+
+	&:hover {
+		background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 80%, #fff 20%);
+	}
+
+	svg path {
+		fill: var(--wp--preset--color--base, #fff);
+	}
+}
+
+.zetkin-events-filter__button.zetkin-events-filter__clear-button {
+	box-sizing: border-box;
+	display: none;
+	height: 2rem;
+	padding: 0.4rem;
+	width: 2rem;
+}
+
+.zetkin-events-filter__button.zetkin-events-filter__datepicker-button {
+	box-sizing: border-box;
+	height: 2rem;
+	padding: 0.25rem 0.5rem;
+	width: 2.5rem;
+}
+
+.zetkin-events-filter__datepicker-input {
+	height: 0;
+	visibility: hidden;
+	width: 0;
 }
