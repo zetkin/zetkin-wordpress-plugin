@@ -26,12 +26,9 @@
 	padding: 0 0.75rem;
 
 	&:hover {
-		background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
+		background-color:
+ color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
 	}
-}
-
-.zetkin-events-filter__clear-button.zetkin-events-filter__clear-button--visible {
-	display: block;
 }
 
 .zetkin-events-filter__button.zetkin-events-filter__button--selected,
@@ -40,7 +37,8 @@
 	color: var(--wp--preset--color--base, #fff);
 
 	&:hover {
-		background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 80%, #fff 20%);
+		background-color:
+ color-mix(in srgb, var(--wp--preset--color--contrast, #000) 80%, #fff 20%);
 	}
 
 	svg path {
@@ -52,8 +50,12 @@
 	box-sizing: border-box;
 	display: none;
 	height: 2rem;
-	padding: 0.4rem;
+	padding: 0.3rem 0.4rem;
 	width: 2rem;
+}
+
+.zetkin-events-filter__button.zetkin-events-filter__clear-button.zetkin-events-filter__clear-button--visible {
+	display: block;
 }
 
 .zetkin-events-filter__button.zetkin-events-filter__datepicker-button {
@@ -67,4 +69,63 @@
 	height: 0;
 	visibility: hidden;
 	width: 0;
+}
+
+.zetkin-event {
+	background-color:
+ color-mix(in srgb, var(--wp--preset--color--base, #fff) 50%, #fff 50%);
+	border:
+		1px solid
+		color-mix(in srgb, var(--wp--preset--color--base, #fff) 95%, #000 5%);
+	border-radius: 0.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	margin-bottom: 1rem;
+	padding: 1rem;
+
+	* {
+		margin: 0;
+	}
+}
+
+.zetkin-event__title {
+	font-size: var(--wp--preset--font-size--medium, 1.125rem);
+	font-weight: 700;
+	margin-bottom: 0.25rem;
+}
+
+.zetkin-event__project,
+.zetkin-event__time,
+.zetkin-event__location {
+	font-size: var(--wp--preset--font-size--small, 1.125rem);
+}
+
+.zetkin-event__row {
+	align-items: center;
+	display: flex;
+	gap: 0.25rem;
+
+	svg {
+		width: 1.5rem;
+	}
+}
+
+.zetkin-event__sign-up {
+	color: var(--wp--preset--color--base, #fff);
+	background-color:
+ color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	border-radius: 0.25rem;
+	cursor: pointer;
+	margin-top: 1rem;
+	max-width: 150px;
+	padding: 0.5rem;
+	text-align: center;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		background-color:
+ color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
+	}
 }
