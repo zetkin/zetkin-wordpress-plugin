@@ -1,26 +1,41 @@
 <?php
 
+use Zetkin\ZetkinWordPressPlugin\HTML\Element;
+use Zetkin\ZetkinWordPressPlugin\HTML\Renderer;
+use Zetkin\ZetkinWordPressPlugin\JoinForms;
 use Zetkin\ZetkinWordPressPlugin\ZetkinAPI;
 
-$formId = $attributes["formId"] ?? null;
-$formSubmitToken = $attributes["formSubmitToken"] ?? null;
+if (!function_exists('renderZetkinJoinForm')) {
+	function renderZetkinJoinForm($attributes)
+	{
+		$formId = $attributes["formId"] ?? null;
+		$formSubmitToken = $attributes["formSubmitToken"] ?? null;
+		$result = $_GET[JoinForms::RESULT_QUERY_ARG_PREFIX . $formId] ?? "";
 
-if (!$formId || !$formSubmitToken || $formId < 1) {
-?>
-	<?php echo '<p class="zetkin-invalid-join-form">' . esc_html__("Invalid join form - check the block settings.", "zetkin") . '</p>'; ?>
+		if ($result === "success") { ?>
+			<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-join-form-block"]); ?>>
+				<?php Renderer::renderElement(new Element("p", ["class" => "zetkin-join-form-success"], __("Thanks for signing up!", "zetkin"))) ?>
+			</div>
+		<?php
+			return;
+		}
+
+		$form = null;
+		if ($formId) {
+			$form = ZetkinAPI::getJoinForm($formId);
+		}
+
+		if (!$form || !$formSubmitToken ): ?>
+			<?php echo '<p class="zetkin-invalid-join-form">' . esc_html__("Invalid join form - check the block settings.", "zetkin") . '</p>'; ?>
+		<?php endif; ?>
+
+		<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-join-form-block"]); ?>>
+			<?php JoinForms::renderJoinForm($form, $result); ?>
+		</div>
 <?php
+	}
 }
 
-$formFields = ZetkinAPI::getJoinFormFields($formId);
+renderZetkinJoinForm($attributes);
 
 ?>
-<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-join-form-block"]); ?>>
-	<form class="zetkin-join-form">
-		<?php foreach ($formFields as $formField): ?>
-			<div class="zetkin-input">
-				<label for="<?php echo esc_attr($formField['slug']) ?>"><?php echo esc_html($formField['label']) ?></label>
-				<input id="<?php echo esc_attr($formField['slug']) ?>" name="<?php echo esc_html($formField['slug']) ?>" type="text" />
-			</div>
-		<?php endforeach; ?>
-	</form>
-</div>

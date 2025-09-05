@@ -4,6 +4,7 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
+@use "../shared/style";
 
 .zetkin-calendar-events {
 	list-style: none;
@@ -26,8 +27,7 @@
 	padding: 0 0.75rem;
 
 	&:hover {
-		background-color:
- color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
+		background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
 	}
 }
 
@@ -37,8 +37,7 @@
 	color: var(--wp--preset--color--base, #fff);
 
 	&:hover {
-		background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 80%, #fff 20%);
+		background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 80%, #fff 20%);
 	}
 
 	svg path {
@@ -72,8 +71,7 @@
 }
 
 .zetkin-event {
-	background-color:
- color-mix(in srgb, var(--wp--preset--color--base, #fff) 50%, #fff 50%);
+	background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 50%, #fff 50%);
 	border:
 		1px solid
 		color-mix(in srgb, var(--wp--preset--color--base, #fff) 95%, #000 5%);
@@ -93,6 +91,8 @@
 	font-size: var(--wp--preset--font-size--medium, 1.125rem);
 	font-weight: 700;
 	margin-bottom: 0.25rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .zetkin-event__project,
@@ -112,20 +112,5 @@
 }
 
 .zetkin-event__sign-up {
-	color: var(--wp--preset--color--base, #fff);
-	background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
-	border-radius: 0.25rem;
-	cursor: pointer;
-	margin-top: 1rem;
-	max-width: 150px;
-	padding: 0.5rem;
-	text-align: center;
-	text-decoration: none;
-
-	&:hover,
-	&:focus {
-		background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
-	}
+	margin-top: 0.5rem;
 }

@@ -13,6 +13,10 @@ class Blocks
         add_action('init', function () {
             self::initBlocks();
         });
+
+        add_action('save_post', function ($postId, $post, $update) {
+            self::saveJoinFormSubmitToken($postId, $post);
+        }, 10, 3);
     }
 
     private static function initBlocks()
@@ -48,5 +52,55 @@ class Blocks
         foreach (array_keys($manifest_data) as $block_type) {
             register_block_type($BUILD_DIR . "/{$block_type}");
         }
+    }
+
+    /**
+     * Hook that runs when saving posts/pages with blocks
+     * Extracts block attributes and saves them to wp_options
+     */
+    private static function saveJoinFormSubmitToken($post_id, $post)
+    {
+        // Only run on post save, not auto-drafts or revisions
+        if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+            return;
+        }
+
+        // Check if we're in the block editor context
+        if (!has_blocks($post->post_content)) {
+            return;
+        }
+
+        // Parse blocks from post content
+        $blocks = parse_blocks($post->post_content);
+
+        $allBlocks = self::flattenBlocks($blocks);
+
+        foreach ($allBlocks as $block) {
+            if ($block["blockName"] === "zetkin/join-form-block") {
+                $formId = $block["attrs"]["formId"] ?? null;
+                $submitToken = $block["attrs"]["formSubmitToken"] ?? null;
+                if ($formId && $submitToken) {
+                    update_option("ZETKIN_JOIN_FORM_SUBMIT_TOKEN_" . $formId, $submitToken);
+                }
+            }
+        }
+    }
+
+    private static function flattenBlocks($blocks, $level = 0)
+    {
+        $allBlocks = [];
+
+        foreach ($blocks as $block) {
+            if (!empty($block['blockName'])) {
+                $allBlocks[] = $block;
+
+                // Recursively process inner blocks
+                if (!empty($block['innerBlocks'])) {
+                    $allBlocks = array_merge($allBlocks, self::flattenBlocks($block["innerBlocks"]));
+                }
+            }
+        }
+
+        return $allBlocks;
     }
 }

@@ -14,6 +14,14 @@ class RestAPI
     public static function init()
     {
         add_action('rest_api_init', function () {
+            register_rest_route('zetkin', '/join-form', array(
+                'methods'  => 'GET',
+                'callback' => function ($request) {
+                    return ZetkinAPI::getJoinForm($request->get_param("form_id"));
+                },
+                'permission_callback' => '__return_true',
+            ));
+
             register_rest_route('zetkin', '/surveys', array(
                 'methods'  => 'GET',
                 'callback' => function () {

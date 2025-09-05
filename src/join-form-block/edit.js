@@ -1,12 +1,16 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 import { useState } from 'react';
 import { TextControl, Button, Spinner, Notice } from '@wordpress/components';
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const [ formId, setFormId ] = useState( '' );
-	const [ formSubmitToken, setFormSubmitToken ] = useState( '' );
+	const [ formId, setFormId ] = useState( attributes.formId );
+	const [ formSubmitToken, setFormSubmitToken ] = useState(
+		attributes.formSubmitToken
+	);
 	const [ loading, setLoading ] = useState( false );
 	const [ error, setError ] = useState( '' );
 	const [ formFields, setFormFields ] = useState( [] );
@@ -20,19 +24,14 @@ export default function Edit( { attributes, setAttributes } ) {
 		setLoading( true );
 		setFormFields( [] );
 		try {
-			const baseUrl = window.zetkinSettings.stagingEnvironment
-				? 'http://api.dev.zetkin.org'
-				: 'https://api.zetkin.org';
-			const orgId = window.zetkinSettings.organizationId;
-			const url = `${ baseUrl }/v2/${ orgId }/join_forms/${ formId }`;
-			const response = await fetch( url );
-			if ( ! response.ok ) {
-				throw new Error();
-			}
-			const responseData = await response.json();
-			setFormFields( responseData.data.fields );
+			const data = await apiFetch( {
+				path: addQueryArgs( '/zetkin/join-form', {
+					form_id: formId,
+				} ),
+			} );
+			setFormFields( data.fields );
 			setAttributes( {
-				formId,
+				formId: Number( formId ),
 				formSubmitToken,
 			} );
 		} catch {
@@ -90,9 +89,15 @@ export default function Edit( { attributes, setAttributes } ) {
 					''
 				) }
 
-				{ formFields.map( ( f ) => (
-					<TextControl key={ f.label } label={ f.label } readOnly />
-				) ) }
+				<div style={ { marginTop: '1rem' } }>
+					{ formFields.map( ( f ) => (
+						<TextControl
+							key={ f.slug }
+							label={ f.slug.replace( /_/g, ' ' ) }
+							readOnly
+						/>
+					) ) }
+				</div>
 			</form>
 		</div>
 	);

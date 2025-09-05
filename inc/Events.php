@@ -111,7 +111,7 @@ class Events
         }
 
         if ($eventHref) {
-            $eventElements[] = new Element("a", ["class" => "zetkin-event__sign-up", "href" => $eventHref, "target" => "_blank"], __("Sign up", "zetkin"));
+            $eventElements[] = new Element("a", ["class" => "zetkin-event__sign-up zetkin-submit-button", "href" => $eventHref, "target" => "_blank"], __("Sign up", "zetkin"));
         }
 
         return new Element(

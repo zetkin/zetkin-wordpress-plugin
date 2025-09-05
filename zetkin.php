@@ -15,6 +15,7 @@
  */
 
 use Zetkin\ZetkinWordPressPlugin\Blocks;
+use Zetkin\ZetkinWordPressPlugin\JoinForms;
 use Zetkin\ZetkinWordPressPlugin\RestAPI;
 use Zetkin\ZetkinWordPressPlugin\Settings;
 use Zetkin\ZetkinWordPressPlugin\Surveys;
@@ -26,6 +27,7 @@ if (! defined('ABSPATH')) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 Blocks::init();
+JoinForms::init();
 RestAPI::init();
 Settings::init();
 Surveys::init();

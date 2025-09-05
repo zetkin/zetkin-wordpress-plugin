@@ -61,7 +61,7 @@ class Surveys
                 // Ensure always an array in transient session
                 $allFields[$key] = $value;
 
-                $field = substr($key, 0, -10);
+                $field = substr($key, 0, -8);
                 $options = [];
                 foreach ($value as $v) {
                     if ($v !== "") {
@@ -79,11 +79,11 @@ class Surveys
             $surveyId,
             ["responses" => $responses, "signature" => $signature]
         );
-        $response = false;
+
+        $queryArg = self::RESULT_QUERY_ARG_PREFIX . $surveyId;
 
         // On error, save responses in a transient session
         if (!$response) {
-            $queryArg = self::RESULT_QUERY_ARG_PREFIX . $surveyId;
             set_transient($queryArg, $allFields, 60); // 60 seconds lifetime
         }
 
@@ -172,7 +172,7 @@ class Surveys
         $formElements[] = new Element("div", ["class" => "zetkin-survey-signature"], $signatureElements);
 
         $formElements[] = self::getPrivacyHTMLElements($zetkinSurvey);
-        $formElements[] = new Element("button", ["class" => "zetkin-survey-submit", "type" => "submit"], __("Submit", "zetkin"));
+        $formElements[] = new Element("button", ["class" => "zetkin-survey-submit zetkin-submit-button", "type" => "submit"], __("Submit", "zetkin"));
         if ($result === "error") {
             $formElements[] =
                 new Element(

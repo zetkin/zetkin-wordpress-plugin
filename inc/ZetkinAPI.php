@@ -14,7 +14,7 @@ class ZetkinAPI
         return self::doV1Request("actions?recursive") ?? [];
     }
 
-    public static function getJoinFormFields($formId)
+    public static function getJoinForm($formId)
     {
         $organizationId = get_option(Settings::ORGANIZATION_ID_OPTION);
         if (!$organizationId) {
@@ -38,6 +38,16 @@ class ZetkinAPI
         }
 
         return $data["data"];
+    }
+
+    public static function submitJoinForm($formId, $formData)
+    {
+        $submitToken = get_option("ZETKIN_JOIN_FORM_SUBMIT_TOKEN_" . $formId);
+        $body = [
+            "form_data" => $formData,
+            "submit_token" => $submitToken
+        ];
+        return self::doV1Request("join_forms/$formId/submissions", "POST", $body);
     }
 
     public static function getSurveys()

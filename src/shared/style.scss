@@ -1,0 +1,18 @@
+.zetkin-submit-button {
+	color: var(--wp--preset--color--base, #fff);
+	background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	border: none;
+	border-radius: 0.25rem;
+	cursor: pointer;
+	font-size: var(--wp--preset--font-size--medium, 1.25rem);
+	line-height: 1.5;
+	max-width: 150px;
+	padding: 0.5rem;
+	text-align: center;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
+	}
+}

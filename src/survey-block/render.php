@@ -14,7 +14,7 @@ if (!function_exists('renderZetkinSurveyBlock')) {
 
 		if ($result === "success") { ?>
 			<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-survey-block"]); ?>>
-				<?php Renderer::renderElement(new Element("p", ["class" => "zetkin-survey-success"], __("Success!", "zetkin"))) ?>
+				<?php Renderer::renderElement(new Element("p", ["class" => "zetkin-survey-success"], __("Thanks for your response!", "zetkin"))) ?>
 			</div>
 		<?php
 			return;
