@@ -2,7 +2,7 @@
 
 set -eox pipefail
 
-composer install
+composer install --no-dev
 npm i
 npm run build
 npx wp-scripts plugin-zip
