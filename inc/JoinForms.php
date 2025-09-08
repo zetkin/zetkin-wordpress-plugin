@@ -100,7 +100,7 @@ class JoinForms
             $label = __("Gender", "zetkin");
             return new Element("div", ["class" => "zetkin-join-form-input"], [
                 new Element("label", ["for" => $field["slug"]], $label),
-                new Element("select", ["id" => $field["slug"], "name" => $field["slug"]], [
+                new Element("select", ["id" => $field["slug"], "class" => "zetkin-select", "name" => $field["slug"]], [
                     new Element("option", ["value" => "unspecified", "selected" => $value === "unspecified"], __("Unspecified", "zetkin")),
                     new Element("option", ["value" => "m", "selected" => $value === "m"], __("Male", "zetkin")),
                     new Element("option", ["value" => "f", "selected" => $value === "f"], __("Female", "zetkin")),
@@ -112,7 +112,7 @@ class JoinForms
         $label = ucwords(strtolower(preg_replace("/_+/", " ", $field["slug"])));
         return new Element("div", ["class" => "zetkin-join-form-input"], [
             new Element("label", ["for" => $field["slug"]], $label),
-            new Element("input", ["id" => $field["slug"], "name" => $field["slug"], "value" => $value], [])
+            new Element("input", ["id" => $field["slug"], "class" => "zetkin-input", "name" => $field["slug"], "value" => $value], [])
         ]);
     }
 }

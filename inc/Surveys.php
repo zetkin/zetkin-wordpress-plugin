@@ -258,7 +258,7 @@ class Surveys
             "input",
             [
                 "id" => $id,
-                "class" => "zetkin-survey-question__input",
+                "class" => "zetkin-survey-question__input zetkin-input",
                 "name" => $name,
                 "type" => $element["question"]["response_config"]["type"] ?? "text",
                 "required" => $element["question"]["required"],
@@ -277,7 +277,7 @@ class Surveys
             "textarea",
             [
                 "id" => $id,
-                "class" => "zetkin-survey-question__textarea",
+                "class" => "zetkin-survey-question__textarea zetkin-input",
                 "name" => $name,
                 "required" => $element["question"]["required"],
                 "rows" => 4,
@@ -361,7 +361,7 @@ class Surveys
         $children[] = new Element(
             "select",
             [
-                "class" => "zetkin-survey-question__select",
+                "class" => "zetkin-survey-question__select zetkin-select",
                 "id" => $id,
                 "name" => $name,
             ],
