@@ -104,6 +104,6 @@ class ZetkinAPI
     private static function getBaseUrl()
     {
         $stagingEnv = get_option(Settings::STAGING_ENVIRONMENT_OPTION);
-        return $stagingEnv ? "http://api.dev.zetkin.org" : "https://api.zetkin.org";
+        return $stagingEnv ? "http://api.dev.zetkin.org" : "https://api.zetk.in";
     }
 }
