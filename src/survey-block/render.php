@@ -3,6 +3,7 @@
 use Zetkin\ZetkinWordPressPlugin\HTML\Element;
 use Zetkin\ZetkinWordPressPlugin\HTML\Renderer;
 use Zetkin\ZetkinWordPressPlugin\Surveys;
+use Zetkin\ZetkinWordPressPlugin\Utils;
 use Zetkin\ZetkinWordPressPlugin\ZetkinAPI;
 
 if (!function_exists('renderZetkinSurveyBlock')) {
@@ -30,8 +31,8 @@ if (!function_exists('renderZetkinSurveyBlock')) {
 		}
 
 		?>
-		<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-survey-block"]); ?>>
-			<?php Surveys::renderSurvey($survey, $result) ?>
+		<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-survey-block"]); ?> style="<?php echo Utils::getBlockStyle($attributes) ?>">
+			<?php Surveys::renderSurvey($survey, $attributes, $result) ?>
 		</div>
 <?php
 	}

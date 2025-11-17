@@ -11,6 +11,43 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"textColor": {
+            "type": "string"
+        },
+        "backgroundColor": {
+            "type": "string"
+        },
+		"buttonColor": {
+            "type": "string"
+        },
+		"buttonTextColor": {
+            "type": "string"
+        },
+		"eventColor": {
+			"type": "string"
+		},
+        "paddingTop": {
+            "type": "number",
+            "default": 0
+        },
+        "paddingBottom": {
+            "type": "number",
+            "default": 0
+        },
+        "paddingLeft": {
+            "type": "number",
+            "default": 0
+        },
+        "paddingRight": {
+            "type": "number",
+            "default": 0
+        },
+		"spacing": {
+			"type": "number",
+			"default": 16
+		}
+	},
 	"textdomain": "zetkin",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

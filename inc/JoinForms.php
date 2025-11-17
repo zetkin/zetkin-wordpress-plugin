@@ -61,7 +61,7 @@ class JoinForms
         exit;
     }
 
-    public static function renderJoinForm($form, $result = null)
+    public static function renderJoinForm($form, $attributes, $result = null)
     {
         $prevSubmission = get_transient(self::RESULT_QUERY_ARG_PREFIX . $form["id"]);
         if (!$prevSubmission) {
@@ -79,9 +79,20 @@ class JoinForms
             new Element("input", ["type" => "hidden", "name" => "join_form_id.hidden", "value" => $form["id"]]),
         ];
         foreach ($form["fields"] as $field) {
-            $formElements[] = self::getHTMLElementsForField($field, $prevSubmission[$field["slug"]] ?? "");
+            $formElements[] = self::getHTMLElementsForField($field, $prevSubmission[$field["slug"]] ?? "", $attributes);
         }
-        $formElements[] =  new Element("button", ["class" => "zetkin-join-form-submit zetkin-submit-button", "type" => "submit"], __("Submit", "zetkin"));
+
+        $buttonStyle = "";
+        if (!empty($attributes["buttonColor"])) {
+            $buttonColor = $attributes["buttonColor"];
+            $buttonStyle .= "background-color:{$buttonColor};";
+        }
+        if (!empty($attributes["buttonTextColor"])) {
+            $buttonTextColor = $attributes["buttonTextColor"];
+            $buttonStyle .= "color:{$buttonTextColor};";
+        }
+
+        $formElements[] =  new Element("button", ["class" => "zetkin-join-form-submit zetkin-submit-button", "type" => "submit", "style" => $buttonStyle], __("Submit", "zetkin"));
         if ($result === "error") {
             $formElements[] =
                 new Element(
@@ -91,16 +102,21 @@ class JoinForms
                 );
         }
 
-        Renderer::renderElement(new Element("form", ["class" => "zetkin-join-form", "method" => "POST", "action" => admin_url('admin-ajax.php')], $formElements));
+        $spacing = $attributes["spacing"] ?? 0;
+        $formStyle = "gap:{$spacing}px;";
+
+        Renderer::renderElement(new Element("form", ["class" => "zetkin-join-form", "method" => "POST", "action" => admin_url('admin-ajax.php'), "style" => $formStyle], $formElements));
     }
 
-    private static function getHTMLElementsForField($field, $value)
+    private static function getHTMLElementsForField($field, $value, $attributes)
     {
+        $textColor = $attributes["textColor"] ?? null;
+        $selectStyle = $textColor ? "color:{$textColor};border-color:{$textColor};" : "";
         if ($field["slug"] === "gender") {
             $label = __("Gender", "zetkin");
             return new Element("div", ["class" => "zetkin-join-form-input"], [
                 new Element("label", ["for" => $field["slug"]], $label),
-                new Element("select", ["id" => $field["slug"], "class" => "zetkin-select", "name" => $field["slug"]], [
+                new Element("select", ["id" => $field["slug"], "class" => "zetkin-select", "name" => $field["slug"], "style" => $selectStyle], [
                     new Element("option", ["value" => "unspecified", "selected" => $value === "unspecified"], __("Unspecified", "zetkin")),
                     new Element("option", ["value" => "m", "selected" => $value === "m"], __("Male", "zetkin")),
                     new Element("option", ["value" => "f", "selected" => $value === "f"], __("Female", "zetkin")),
@@ -109,10 +125,12 @@ class JoinForms
             ]);
         }
 
+        $inputStyle = $textColor ? "border-color:{$textColor};" : "";
+
         $label = ucwords(strtolower(preg_replace("/_+/", " ", $field["slug"])));
         return new Element("div", ["class" => "zetkin-join-form-input"], [
             new Element("label", ["for" => $field["slug"]], $label),
-            new Element("input", ["id" => $field["slug"], "class" => "zetkin-input", "name" => $field["slug"], "value" => $value], [])
+            new Element("input", ["id" => $field["slug"], "class" => "zetkin-input", "name" => $field["slug"], "value" => $value, "style" => $inputStyle], [])
         ]);
     }
 }

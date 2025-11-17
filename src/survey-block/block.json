@@ -15,6 +15,38 @@
 		"surveyId": {
 			"type": "number",
 			"default": 0
+		},
+		"textColor": {
+            "type": "string"
+        },
+        "backgroundColor": {
+            "type": "string"
+        },
+		"buttonColor": {
+            "type": "string"
+        },
+		"buttonTextColor": {
+            "type": "string"
+        },
+        "paddingTop": {
+            "type": "number",
+            "default": 0
+        },
+        "paddingBottom": {
+            "type": "number",
+            "default": 0
+        },
+        "paddingLeft": {
+            "type": "number",
+            "default": 0
+        },
+        "paddingRight": {
+            "type": "number",
+            "default": 0
+        },
+		"spacing": {
+			"type": "number",
+			"default": 32
 		}
 	},
 	"textdomain": "zetkin",

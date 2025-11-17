@@ -108,6 +108,7 @@ class Settings
     {
         $settingId = self::STAGING_ENVIRONMENT_OPTION;
         register_setting('zetkin_settings_group', $settingId, [
+            'show_in_rest' => true,
             'sanitize_callback' => function ($input) {
                 return $input === '1' ? '1' : '';
             }

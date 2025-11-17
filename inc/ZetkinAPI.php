@@ -16,6 +16,7 @@ class ZetkinAPI
 
     public static function getJoinForm($formId)
     {
+        // Note: this is a V2 request, so doesn't use the V1 request method
         $organizationId = get_option(Settings::ORGANIZATION_ID_OPTION);
         if (!$organizationId) {
             return [];
@@ -47,30 +48,41 @@ class ZetkinAPI
             "form_data" => $formData,
             "submit_token" => $submitToken
         ];
-        return self::doV1Request("join_forms/$formId/submissions", "POST", $body);
+        return self::doSafeV1Request("join_forms/$formId/submissions", "POST", $body);
     }
 
     public static function getSurveys()
     {
-        return self::doV1Request("surveys") ?? [];
+        return self::doSafeV1Request("surveys") ?? [];
     }
 
     public static function getSurvey($surveyId)
     {
-        return self::doV1Request("surveys/$surveyId");
+        return self::doSafeV1Request("surveys/$surveyId");
     }
 
     public static function postSurveyResponse($surveyId, $body)
     {
-        return self::doV1Request("surveys/$surveyId/submissions", "POST", $body);
+        return self::doSafeV1Request("surveys/$surveyId/submissions", "POST", $body);
+    }
+
+    private static function doSafeV1Request($path, $method = "GET", $body = null)
+    {
+        try {
+            return self::doV1Request($path, $method, $body);
+        } catch (\Exception $e) {
+            // Todo: logging
+        }
+        return null;
     }
 
     private static function doV1Request($path, $method = "GET", $body = null)
     {
         $organizationId = get_option(Settings::ORGANIZATION_ID_OPTION);
         if (!$organizationId) {
-            return [];
+            throw new \Exception("Organization ID is missing.");
         }
+
         $baseUrl = self::getBaseUrl();
         $url = $baseUrl . "/v1/orgs/" . $organizationId . "/$path";
 
@@ -86,20 +98,29 @@ class ZetkinAPI
         }
 
         if (is_wp_error($response)) {
-            // TODO: Logging
-            return null;
+            $msg = $response->get_error_message();
+            throw new \Exception("HTTP request failed: $msg");
         }
 
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
-        if (!$data || !empty($data["error"])) {
-            // TODO: Logging
-            return null;
+        if (!$data) {
+            throw new \Exception("Invalid JSON response: $body");
+        }
+
+        if (!empty($data["error"])) {
+            $msg = is_string($data["error"]) ? $data["error"] : json_encode($data["error"]);
+            throw new \Exception("API error: $msg");
+        }
+
+        if (!array_key_exists("data", $data)) {
+            throw new \Exception("Malformed API response—missing 'data' field.");
         }
 
         return $data["data"];
     }
+
 
     private static function getBaseUrl()
     {

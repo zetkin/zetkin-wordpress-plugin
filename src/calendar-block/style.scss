@@ -14,7 +14,6 @@
 .zetkin-events-filter {
 	align-items: center;
 	display: flex;
-	gap: 0.5rem;
 }
 
 .zetkin-events-filter__button {
@@ -25,6 +24,7 @@
 	height: 2rem;
 	line-height: 2.25;
 	padding: 0 0.75rem;
+	margin-right: 0.5rem;
 
 	&:hover {
 		background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
@@ -64,10 +64,49 @@
 	width: 2.5rem;
 }
 
+.zetkin-events-filter__button.zetkin-events-filter__datepicker-button.zetkin-events-filter__button--selected {
+	line-height: 2.25;
+	padding: 0 0.75rem;
+	width: auto;
+}
+
 .zetkin-events-filter__datepicker-input {
 	height: 0;
+	position: absolute;
 	visibility: hidden;
 	width: 0;
+}
+
+.zetkin-event-types-filter {
+	position: relative;
+}
+
+.zetkin-event-types {
+	background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 50%, #fff 50%);
+	border:
+		1px solid
+		color-mix(in srgb, var(--wp--preset--color--base, #fff) 95%, #000 5%);
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+	border-radius: 0.25rem;
+	display: none;
+	flex-direction: column;
+	gap: 0.5rem;
+	left: 0.5rem;
+	list-style: none;
+	margin: 0;
+	padding: 0.5rem;
+	position: absolute;
+	top: 50%;
+}
+
+.zetkin-event-types--visible {
+	display: flex;
+}
+
+.zetkin-event-type {
+	display: flex;
+	gap: 0.25rem;
+	white-space: nowrap;
 }
 
 .zetkin-event {
@@ -85,6 +124,18 @@
 	* {
 		margin: 0;
 	}
+}
+
+.zetkin-event[data-hidden-date] {
+	display: none;
+}
+
+.zetkin-event[data-hidden-type] {
+	display: none;
+}
+
+.zetkin-event[data-hidden-page] {
+	display: none;
 }
 
 .zetkin-event__title {

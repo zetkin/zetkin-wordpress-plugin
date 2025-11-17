@@ -47,7 +47,9 @@ class Renderer
             return;
         }
         foreach ($children as $child) {
-            self::renderElement($child);
+            if ($child) {
+                self::renderElement($child);
+            }
         }
         echo "</$tag>\n";
     }

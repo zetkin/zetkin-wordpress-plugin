@@ -58,4 +58,22 @@ class Utils
         }
         return self::getFormattedTime($startTime) . ' - ' . $endDate->format(self::DATE_TIME_FORMAT_WITHOUT_YEAR);
     }
+
+    public static function getBlockStyle($attributes)
+    {
+        $paddingTop = $attributes["paddingTop"] ?? 0;
+        $paddingBottom = $attributes["paddingBottom"] ?? 0;
+        $paddingLeft = $attributes["paddingLeft"] ?? 0;
+        $paddingRight = $attributes["paddingRight"] ?? 0;
+        $style = "padding-top:{$paddingTop}px;padding-bottom:{$paddingBottom}px;padding-left:{$paddingLeft}px;padding-right:{$paddingRight}px;";
+        if (!empty($attributes["textColor"])) {
+            $color = $attributes["textColor"];
+            $style .= "color:{$color};";
+        }
+        if (!empty($attributes["backgroundColor"])) {
+            $backgroundColor = $attributes["backgroundColor"];
+            $style .= "background-color:{$backgroundColor};";
+        }
+        return $style;
+    }
 }

@@ -98,8 +98,9 @@ class Surveys
         exit;
     }
 
-    public static function renderSurvey($zetkinSurvey, $result = null)
+    public static function renderSurvey($zetkinSurvey, $attributes, $result = null)
     {
+        $textColor = $attributes["textColor"] ?? null;
         $prevSubmission = get_transient(self::RESULT_QUERY_ARG_PREFIX . $zetkinSurvey["id"]);
         if (!$prevSubmission) {
             $prevSubmission = [];
@@ -119,7 +120,7 @@ class Surveys
         ];
 
         foreach ($surveyElements as $surveyElement) {
-            $formElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission);
+            $formElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission, $textColor);
         }
 
         // Add signature elements, required on all surveys but not in the Zetkin API response.
@@ -167,12 +168,23 @@ class Surveys
         ];
 
         foreach ($sigSurveyElements as $surveyElement) {
-            $signatureElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission);
+            $signatureElements[] = self::getHTMLElementsForSurveyElement($surveyElement, $prevSubmission, $textColor);
         }
         $formElements[] = new Element("div", ["class" => "zetkin-survey-signature"], $signatureElements);
 
-        $formElements[] = self::getPrivacyHTMLElements($zetkinSurvey);
-        $formElements[] = new Element("button", ["class" => "zetkin-survey-submit zetkin-submit-button", "type" => "submit"], __("Submit", "zetkin"));
+        $formElements[] = self::getPrivacyHTMLElements($zetkinSurvey, $textColor);
+
+        $buttonStyle = "";
+        if (!empty($attributes["buttonColor"])) {
+            $buttonColor = $attributes["buttonColor"];
+            $buttonStyle .= "background-color:{$buttonColor};";
+        }
+        if (!empty($attributes["buttonTextColor"])) {
+            $buttonTextColor = $attributes["buttonTextColor"];
+            $buttonStyle .= "color:{$buttonTextColor};";
+        }
+
+        $formElements[] = new Element("button", ["class" => "zetkin-survey-submit zetkin-submit-button", "type" => "submit", "style" => $buttonStyle], __("Submit", "zetkin"));
         if ($result === "error") {
             $formElements[] =
                 new Element(
@@ -181,19 +193,23 @@ class Surveys
                     __("Could not submit your response, please try again later.", "zetkin")
                 );
         }
+
+        $spacing = $attributes["spacing"] ?? 0;
+        $formStyle = "gap:{$spacing}px";
         $formElement = new Element(
             "form",
-            ["class" => "zetkin-survey", "method" => "POST", "action" => admin_url('admin-ajax.php')],
+            ["class" => "zetkin-survey", "method" => "POST", "action" => admin_url('admin-ajax.php'), "style" => $formStyle],
             $formElements
         );
 
         if ($zetkinSurvey["title"]) {
-            Renderer::renderElement(new Element("h2", ["class" => "zetkin-survey-title"], $zetkinSurvey["title"]));
+            $style = $textColor ? "color:{$textColor};" : "";
+            Renderer::renderElement(new Element("h2", ["class" => "zetkin-survey-title", "style" => $style], $zetkinSurvey["title"]));
         }
         Renderer::renderElement($formElement);
     }
 
-    private static function getHTMLElementsForSurveyElement($element, $prevSubmission)
+    private static function getHTMLElementsForSurveyElement($element, $prevSubmission, $textColor)
     {
         $type = $element["type"];
 
@@ -208,9 +224,9 @@ class Surveys
 
         if ($responseType === "text") {
             if ($responseConfig["multiline"] ?? false) {
-                return self::getTextAreaElements($element, $prevSubmission);
+                return self::getTextAreaElements($element, $prevSubmission, $textColor);
             } else {
-                return self::getTextInputElements($element, $prevSubmission);
+                return self::getTextInputElements($element, $prevSubmission, $textColor);
             }
         }
 
@@ -219,7 +235,7 @@ class Surveys
         }
 
         if ($widgetType === "select") {
-            return self::getSelectElements($element, $prevSubmission);
+            return self::getSelectElements($element, $prevSubmission, $textColor);
         }
     }
 
@@ -249,11 +265,12 @@ class Surveys
         return new Element("div", ["class" => "zetkin-survey-text"], $children);
     }
 
-    private static function getTextInputElements($element, $prevSubmission)
+    private static function getTextInputElements($element, $prevSubmission, $textColor)
     {
         $id = self::INPUT_ID_PREFIX . $element["id"];
         $children = self::getLabelElements($element);
         $name = $element["id"] . "_text";
+        $style = $textColor ? "border-color:{$textColor};" : "";
         $children[] = new Element(
             "input",
             [
@@ -262,17 +279,19 @@ class Surveys
                 "name" => $name,
                 "type" => $element["question"]["response_config"]["type"] ?? "text",
                 "required" => $element["question"]["required"],
-                "value" => $prevSubmission[$name] ?? ""
+                "value" => $prevSubmission[$name] ?? "",
+                "style" => $style,
             ]
         );
         return new Element("div", ["class" => "zetkin-survey-question zetkin-survey-question--single-line"], $children);
     }
 
-    private static function getTextAreaElements($element, $prevSubmission)
+    private static function getTextAreaElements($element, $prevSubmission, $textColor)
     {
         $id = self::INPUT_ID_PREFIX . $element["id"];
         $children = self::getLabelElements($element);
         $name = $element["id"] . "_text";
+        $style = $textColor ? "border-color:{$textColor};" : "";
         $children[] = new Element(
             "textarea",
             [
@@ -281,6 +300,7 @@ class Surveys
                 "name" => $name,
                 "required" => $element["question"]["required"],
                 "rows" => 4,
+                "style" => $style,
             ],
             $prevSubmission[$name] ?? ""
         );
@@ -328,11 +348,12 @@ class Surveys
         return new Element("div", ["class" => "zetkin-survey-question zetkin-survey-question--$widgetType"], $children);
     }
 
-    private static function getSelectElements($element, $prevSubmission)
+    private static function getSelectElements($element, $prevSubmission, $textColor)
     {
         $id = self::INPUT_ID_PREFIX . $element["id"];
         $name = $element["id"] . "_options";
         $question = $element["question"];
+        $style = $textColor ? "border-color:{$textColor};color:{$textColor};" : "";
 
         $optionChildren = [
             new Element(
@@ -364,6 +385,7 @@ class Surveys
                 "class" => "zetkin-survey-question__select zetkin-select",
                 "id" => $id,
                 "name" => $name,
+                "style" => $style,
             ],
             $optionChildren,
         );
@@ -407,13 +429,14 @@ class Surveys
         return $children;
     }
 
-    private static function getPrivacyHTMLElements($zetkinSurvey)
+    private static function getPrivacyHTMLElements($zetkinSurvey, $textColor)
     {
         $organizationName = $zetkinSurvey["organization"]["title"] ?? "this organization";
         $privacyMessage = sprintf(
             __('When you submit this survey, the information you provide will be stored and processed in Zetkin by %s in order to organize activism and in accordance with the Zetkin privacy policy.', 'zetkin'),
             $organizationName
         );
+        $style = $textColor ? "color:{$textColor};" : "";
         $children = [
             new Element("p", ["class" => "zetkin-survey-privacy__title"], __("Privacy policy", "zetkin")),
             new Element("label", ["for" => "zetkin-survey-privacy-policy", "class" => "zetkin-survey-question__option"], [
@@ -434,7 +457,7 @@ class Surveys
                 new Element("p", [], [
                     new Element(
                         "a",
-                        ["target" => "_blank", "href" => "https://zetkin.org/privacy"],
+                        ["target" => "_blank", "href" => "https://zetkin.org/privacy", "style" => $style],
                         __("Click to read the full Zetkin Privacy Policy", "zetkin")
                     )
                 ])

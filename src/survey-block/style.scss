@@ -19,33 +19,40 @@
 
 .zetkin-survey-text__header {
 	font-size: var(--wp--preset--font-size--medium, 1.125rem);
-	font-weight: 400;
+	font-weight: 700;
 	margin: 0.5rem 0 0;
 }
 
 .zetkin-survey-text__content {
-	font-weight: 300;
+	font-weight: 500;
 	margin: 0.5rem 0 0;
 }
 
 .zetkin-survey-question__label {
 	font-size: var(--wp--preset--font-size--medium, 1.125rem);
-	font-weight: 400;
+	font-weight: 700;
 	margin: 0;
 }
 
 .zetkin-survey-question__description {
-	font-weight: 300;
+	font-weight: 500;
 	margin: 0;
 }
 
 .zetkin-survey-question__input {
+	border:
+ 1px solid color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	border-radius: 0.25rem;
 	margin: 1rem 0 0;
 	width: 100%;
 }
 
 .zetkin-survey-question__textarea {
+	border:
+ 1px solid color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	border-radius: 0.25rem;
 	box-sizing: border-box;
+	font-family: var(--wp--preset--font-family--body);
 	margin: 1rem 0 0;
 	resize: none;
 	width: 100%;
@@ -61,7 +68,8 @@
 
 .zetkin-survey-question__option {
 	align-items: center;
-	background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 95%, #000 5%);
+	background-color:
+ color-mix(in srgb, var(--wp--preset--color--base, #fff) 96%, #000 4%);
 	border-radius: 5rem;
 	cursor: pointer;
 	display: flex;
@@ -69,18 +77,39 @@
 	padding: 0.5rem;
 
 	&:hover {
-		background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
+		background-color:
+ color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
+	}
+
+	input {
+		accent-color:
+ color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+		height: 20px;
+		width: 20px;
+	}
+}
+
+.zetkin-survey-question__option:has(input:checked) {
+	background-color:
+ color-mix(in srgb, var(--wp--preset--color--base, #fff) 82%, #000 18%);
+
+	&:hover {
+		background-color:
+ color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
 	}
 }
 
 .zetkin-survey-question__select {
+	border:
+ 1px solid color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	border-radius: 0.25rem;
 	margin: 1rem 0 0;
 	width: 100%;
 }
 
 .zetkin-survey-signature__description {
 	font-size: var(--wp--preset--font-size--medium, 1.125rem);
-	font-weight: 400;
+	font-weight: 700;
 	margin: 0 0 1rem;
 }
 
@@ -89,7 +118,7 @@
 	.zetkin-survey-question__label {
 		display: block;
 		font-size: var(--wp--preset--font-size--small, 1.125rem);
-		font-weight: 300;
+		font-weight: 500;
 		margin: 0.5rem 0;
 	}
 
@@ -99,11 +128,12 @@
 }
 
 .zetkin-survey-privacy__title {
+	font-weight: 500;
 	margin: 0 0 0.5rem;
 }
 
 .zetkin-survey-privacy__details {
-	font-weight: 300;
+	font-weight: 500;
 
 	p {
 		margin: 0.5rem 0 0;

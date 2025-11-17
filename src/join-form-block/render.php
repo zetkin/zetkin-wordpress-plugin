@@ -3,6 +3,7 @@
 use Zetkin\ZetkinWordPressPlugin\HTML\Element;
 use Zetkin\ZetkinWordPressPlugin\HTML\Renderer;
 use Zetkin\ZetkinWordPressPlugin\JoinForms;
+use Zetkin\ZetkinWordPressPlugin\Utils;
 use Zetkin\ZetkinWordPressPlugin\ZetkinAPI;
 
 if (!function_exists('renderZetkinJoinForm')) {
@@ -29,8 +30,8 @@ if (!function_exists('renderZetkinJoinForm')) {
 			<?php echo '<p class="zetkin-invalid-join-form">' . esc_html__("Invalid join form - check the block settings.", "zetkin") . '</p>'; ?>
 		<?php endif; ?>
 
-		<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-join-form-block"]); ?>>
-			<?php JoinForms::renderJoinForm($form, $result); ?>
+		<div <?php echo get_block_wrapper_attributes(["class" => "zetkin-join-form-block"]); ?> style="<?php echo Utils::getBlockStyle($attributes) ?>">
+			<?php JoinForms::renderJoinForm($form, $attributes, $result); ?>
 		</div>
 <?php
 	}
