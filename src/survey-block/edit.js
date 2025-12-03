@@ -316,19 +316,21 @@ function OptionsElement( { element } ) {
 				{ ( question.options || [] ).map( ( option ) => {
 					const optionId = `zetkin-survey-option-${ option.id }`;
 					return (
-						<label
-							key={ option.id }
+						<li
 							className="zetkin-survey-question__option"
-							htmlFor={ optionId }
+							key={ option.id }
 						>
-							<input
-								id={ optionId }
-								name={ `${ name }[]` }
-								type={ widgetType }
-								value={ option.id }
-							/>
-							<span>{ option.text }</span>
-						</label>
+							<label htmlFor={ optionId }>
+								<span className="zetkin-survey-question__option-focus-circle"></span>
+								<input
+									id={ optionId }
+									name={ `${ name }[]` }
+									type={ widgetType }
+									value={ option.id }
+								/>
+								<span>{ option.text }</span>
+							</label>
+						</li>
 					);
 				} ) }
 			</ol>

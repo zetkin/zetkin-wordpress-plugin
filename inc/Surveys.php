@@ -326,14 +326,20 @@ class Surveys
             }
 
             $optionChildren[] = new Element(
-                "label",
+                "li",
+                ["class" => "zetkin-survey-question__option"],
                 [
-                    "class" => "zetkin-survey-question__option",
-                    "for" => $optionId
-                ],
-                [
-                    new Element("input", $optionAttrs),
-                    new Element("span", [], $option["text"])
+                    new Element(
+                        "label",
+                        [
+                            "for" => $optionId
+                        ],
+                        [
+                            new Element("span", ["class" => "zetkin-survey-question__option-focus-circle"]),
+                            new Element("input", $optionAttrs),
+                            new Element("span", [], $option["text"])
+                        ]
+                    )
                 ]
             );
         }

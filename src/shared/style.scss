@@ -1,7 +1,6 @@
 .zetkin-submit-button {
 	color: var(--wp--preset--color--base, #fff);
-	background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
 	border: none;
 	border-radius: 0.25rem;
 	cursor: pointer;
@@ -14,8 +13,7 @@
 
 	&:hover,
 	&:focus {
-		background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
+		background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
 	}
 }
 
@@ -67,20 +65,17 @@
 	text-align: center;
 
 	&:hover {
-		background-color:
- color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
+		background-color: color-mix(in srgb, var(--wp--preset--color--base, #fff) 90%, #000 10%);
 	}
 }
 
 .zetkin-pagination-button--selected {
 	border: none;
 	color: var(--wp--preset--color--base, #fff);
-	background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
+	background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 95%, #fff 5%);
 
 	&:hover,
 	&:focus {
-		background-color:
- color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
+		background-color: color-mix(in srgb, var(--wp--preset--color--contrast, #000) 85%, #fff 15%);
 	}
 }

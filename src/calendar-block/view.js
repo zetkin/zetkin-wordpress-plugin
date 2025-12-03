@@ -346,7 +346,7 @@ const updatePagination = ( $pagination, $noEvents ) => {
 		}
 	} );
 	if ( $pageItems.length ) {
-		handlePageButtonClick($pageItems[0]);
+		handlePageButtonClick( $pageItems[ 0 ] );
 	}
 };
 
